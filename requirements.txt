@@ -1,2 +1,3 @@
 git+git://github.com/garulf/flox@v0.9.10#egg=flox-lib
 pyarr==2.0.7
+requests==2.25.1
