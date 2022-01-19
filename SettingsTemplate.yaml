@@ -1,0 +1,18 @@
+body:
+  - type: textBlock
+    attributes:
+      name: description
+      description: >
+        Please provide your Sonarr API key and URL
+  - type: input
+    attributes:
+      name: url
+      label: 'Sonarr URL:'
+      defaultValue: "http://localhost:8989/"
+      description: 'Sonarr server URL'
+  - type: input
+    attributes:
+      name: api_key
+      label: 'API Key:'
+      defaultValue: ""
+      description: 'API Key'

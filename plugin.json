@@ -1,0 +1,12 @@
+{
+    "ID": "258159A0D7A64C7A931CBBD8FB3A6FA6",
+    "ActionKeyword": "sr",
+    "Name": "Sonarr Search",
+    "Description": "Search your Sonarr server library",
+    "Author": "Garulf",
+    "Version": "0.0.1",
+    "Language": "python",
+    "Website": "https://github.com/Garulf/sonarr-search",
+    "IcoPath": "./icon.png",
+    "ExecuteFileName": "run.py"
+}
