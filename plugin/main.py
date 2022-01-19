@@ -6,6 +6,7 @@ from pyarr import SonarrAPI
 
 CACHE_DIR = 'Sonarr-Search'
 UNAUTHORIZED = {'error': 'Unauthorized'}
+DEFAULT_URL = 'http://localhost:8989'
 
 
 @utils.cache('sonarr_series.json', max_age=300)
@@ -30,7 +31,7 @@ def format_subtitle(text):
 class SonarrSearch(Flox):
 
     def init_api(self):
-        self.url, self.api_key = self.settings.get('url'), self.settings.get('api_key')
+        self.url, self.api_key = self.settings.get('url', DEFAULT_URL), self.settings.get('api_key')
         self.sr = SonarrAPI(self.url, self.api_key)
 
     def query(self, query):
