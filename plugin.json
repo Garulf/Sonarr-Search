@@ -4,7 +4,7 @@
     "Name": "Sonarr Search",
     "Description": "Search your Sonarr server library",
     "Author": "Garulf",
-    "Version": "0.0.1",
+    "Version": "0.0.2",
     "Language": "python",
     "Website": "https://github.com/Garulf/sonarr-search",
     "IcoPath": "./icon.png",
