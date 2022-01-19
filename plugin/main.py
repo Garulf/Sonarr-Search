@@ -1,8 +1,8 @@
 import webbrowser
-import json
 
 from flox import Flox, utils, ICON_BROWSER, ICON_SETTINGS
 from pyarr import SonarrAPI
+from requests.exceptions import ConnectionError
 
 CACHE_DIR = 'Sonarr-Search'
 UNAUTHORIZED = {'error': 'Unauthorized'}
@@ -50,7 +50,16 @@ class SonarrSearch(Flox):
                 self.new_series(query, executor)
 
     def series_results(self, query, executor):
-        shows = get_sonarr_series(self.sr)
+        try:
+            shows = get_sonarr_series(self.sr)
+        except ConnectionError:
+            self.add_item(
+                title='Connection Error',
+                subtitle='Please check your settings',
+                icon=ICON_SETTINGS,
+                method=self.open_setting_dialog
+            )
+            return
         if shows == []:
             self.add_item(
                 title='Unauthorized or No shows found!',
