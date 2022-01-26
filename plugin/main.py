@@ -1,4 +1,5 @@
 import webbrowser
+import urllib.parse
 
 from flox import Flox, utils, ICON_BROWSER, ICON_SETTINGS
 from pyarr import SonarrAPI
@@ -69,10 +70,6 @@ class SonarrSearch(Flox):
             return
         for show in shows:
             if query.lower() in show['title'].lower():
-                try:
-                    icon = self.url + show['images'][1]['url']
-                except IndexError:
-                    icon = self.icon
                 self.add_item(
                     title=show['title'],
                     subtitle=format_subtitle(show['overview']),
@@ -114,8 +111,9 @@ class SonarrSearch(Flox):
     def open_show(self, url, titleSlug):
         webbrowser.open(f'{url}/series/{titleSlug}')
 
-    def add_new(self, url, id):
-        url = f'{url}/add/new?term=tvdb:{id}'
+    def add_new(self, url, search_term):
+        search_term = urllib.parse.quote(search_term)
+        url = f'{url}/add/new?term={search_term}'
         webbrowser.open(url)
 
 
