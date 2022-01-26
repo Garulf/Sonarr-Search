@@ -44,12 +44,11 @@ class SonarrSearch(Flox):
                 method=self.open_setting_dialog
             )
             return
-        with utils.ThreadPoolExecutor(max_workers=10) as executor:
-            self.series_results(query, executor)
-            if len(self._results) == 0:
-                self.new_series(query, executor)
+        self.series_results(query)
+        if len(self._results) == 0:
+            self.new_series(query)
 
-    def series_results(self, query, executor):
+    def series_results(self, query):
         try:
             shows = get_sonarr_series(self.sr)
         except ConnectionError:
@@ -77,19 +76,15 @@ class SonarrSearch(Flox):
                 self.add_item(
                     title=show['title'],
                     subtitle=format_subtitle(show['overview']),
-                    icon=str(utils.get_icon(icon, self.name, show['titleSlug'] + '.jpg')),
+                    icon=self.icon,
                     context=show,
                     method=self.open_show,
                     parameters=[self.url, show['titleSlug']],
                 )
 
-    def new_series(self, query, executor):
+    def new_series(self, query):
         new_shows = self.sr.lookup_series(query)
         for show in new_shows:
-            try:
-                icon = show['images'][1]['url']
-            except (IndexError, KeyError):
-                icon = self.icon
             try:
                 overview = show['overview']
             except KeyError:
@@ -97,9 +92,9 @@ class SonarrSearch(Flox):
             self.add_item(
                 title=show['title'],
                 subtitle=format_subtitle(overview),
-                icon=str(utils.get_icon(executor, icon, self.name, show['titleSlug'] + '.jpg')),
+                icon=self.icon,
                 method=self.add_new,
-                parameters=[self.url, show['tvdbId']],
+                parameters=[self.url, query],
             )
 
     def context_menu(self, data):
