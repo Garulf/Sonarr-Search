@@ -1,0 +1,31 @@
+{
+  "keyword": "sr",
+  "query": "the",
+  "icon": "../../data/icon.png",
+  "max_results": 4,
+  "selection": 0,
+  "results": [
+    {
+      "title": "The Expanse",
+      "subtitle": "Two hundred years from now, a detective and a ship's officer uncover a conspiracy that threatens the solar system.",
+      "icon": "../../data/icon.png"
+    },
+    {
+      "title": "The Office (US)",
+      "subtitle": "A mockumentary about the everyday lives of the employees at a paper company in Scranton.",
+      "icon": "../../data/icon.png"
+    },
+    {
+      "title": "The Mandalorian",
+      "subtitle": "A lone bounty hunter makes his way through the outer reaches of the galaxy.",
+      "icon": "../../data/icon.png"
+    },
+    {
+      "title": "The Last of Us",
+      "subtitle": "A smuggler escorts a teenage girl across a post-pandemic United States.",
+      "icon": "../../data/icon.png"
+    }
+  ],
+  "query_suggestion": "",
+  "show_caret": false
+}

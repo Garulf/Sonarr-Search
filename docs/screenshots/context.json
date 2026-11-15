@@ -1,0 +1,16 @@
+{
+  "keyword": "sr",
+  "query": "expanse",
+  "icon": "../../data/icon.png",
+  "max_results": 1,
+  "selection": 0,
+  "results": [
+    {
+      "title": "Open in browser",
+      "subtitle": "http://sonarr.example.lan:8989/series/the-expanse",
+      "icon": "../../data/icon.png"
+    }
+  ],
+  "query_suggestion": "",
+  "show_caret": false
+}
