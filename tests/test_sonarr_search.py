@@ -40,6 +40,16 @@ def test_context_menu_opens_the_show_in_the_browser(client):
     assert sonarr_search.context_menu([]) == []
 
 
+def test_shows_without_an_overview_are_listed(client, session):
+    session.responses["/api/v3/series"] = FakeResponse([
+        {"id": 3, "title": "Andor", "titleSlug": "andor"},
+        {"id": 4, "title": "Andor Shorts", "titleSlug": "andor-shorts", "overview": None},
+    ])
+    session.responses["/api/v3/series/lookup"] = FakeResponse([{"title": "Arcane", "overview": None}])
+    assert [r.subtitle for r in sonarr_search.search(client, "andor")] == ["...", "..."]
+    assert [r.subtitle for r in sonarr_search.search(client, "arcane")] == ["..."]
+
+
 def test_unknown_show_falls_back_to_lookup(client, session):
     results = sonarr_search.search(client, "severance")
     assert titles(results) == ["Severance", "Severance (2006)"]

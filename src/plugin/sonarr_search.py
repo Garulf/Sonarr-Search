@@ -29,8 +29,8 @@ def settings_result(title: str, subtitle: str) -> Result:
     return make_result(title, subtitle, icons.SETTINGS or ICON).add_action(api.open_setting_dialog())
 
 
-def format_subtitle(text: str) -> str:
-    return text.replace("\r\n", " ").replace("\n", " ")
+def format_subtitle(show: dict) -> str:
+    return (show.get("overview") or "...").replace("\r\n", " ").replace("\n", " ")
 
 
 def sonarr() -> Sonarr:
@@ -55,7 +55,7 @@ def library_results(client: Sonarr, query: str, shows: List[dict]) -> List[Resul
     for show in shows:
         if query.lower() in show["title"].lower():
             show_url = f"{client.url}/series/{show['titleSlug']}"
-            result = make_result(show["title"], format_subtitle(show["overview"]))
+            result = make_result(show["title"], format_subtitle(show))
             result.context_data = [show_url]
             results.append(result.add_action(api.open_url(show_url)))
     return results
@@ -64,7 +64,7 @@ def library_results(client: Sonarr, query: str, shows: List[dict]) -> List[Resul
 def new_series_results(client: Sonarr, query: str) -> List[Result]:
     add_url = f"{client.url}/add/new?term={quote(query)}"
     return [
-        make_result(show["title"], format_subtitle(show.get("overview", "..."))).add_action(api.open_url(add_url))
+        make_result(show["title"], format_subtitle(show)).add_action(api.open_url(add_url))
         for show in client.lookup(query)
     ]
 
