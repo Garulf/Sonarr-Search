@@ -1,0 +1,85 @@
+{% extends "base.md.j2" %}
+
+{% block badges_extra %} [![Downloads](https://img.shields.io/github/downloads/{{ project.owner }}/{{ project.repo }}/total)]({{ project.url }}/releases/latest){% endblock %}
+
+{% block usage %}
+## Features
+
+* **Search your library.** Every show on your Sonarr server, matched by title.
+* **Open a show in Sonarr.** `Enter` opens the show's page in your browser.
+* **Add new shows.** When nothing in your library matches, Sonarr's lookup suggests shows to add.
+
+## Usage
+
+Type `sr` followed by part of a show's title:
+
+```
+sr the
+```
+
+{{ screenshot("search", alt="Sonarr Search results in Flow Launcher") }}
+
+`sr` on its own lists your whole library.
+
+### Add a new show
+
+If no show in your library matches, the results come from Sonarr's series lookup. Select one to
+open Sonarr's **Add New** page with your search filled in:
+
+{{ screenshot("lookup", alt="Shows to add from Sonarr's lookup") }}
+
+### Context menu
+
+Open the context menu (`Shift+Enter` or right-click) on a show to open it in your browser:
+
+{{ screenshot("context", alt="Open in browser in the context menu") }}
+
+## Installation
+
+### Flow Launcher
+
+In Flow Launcher, type:
+
+```
+pm install sonarr search
+```
+
+{{ screenshot("install", alt="Flow Launcher plugin manager installing Sonarr Search") }}
+
+### Manual installation
+
+Download `Sonarr-Search-<version>.zip` from the [latest release]({{ project.url }}/releases/latest) and unzip it into
+`%appdata%\FlowLauncher\Plugins`, then restart Flow Launcher.
+
+Pre-releases of the next version are published from the open release PR on the
+[releases page]({{ project.url }}/releases) for testing. Flow Launcher won't offer them as updates.
+
+## Configuration
+
+Open **Settings → Plugins → Sonarr Search** in Flow Launcher:
+
+| Setting | Default | Description |
+| --- | --- | --- |
+| Sonarr URL | `http://localhost:8989/` | Your Sonarr URL, including `http://` or `https://` and the port |
+| API Key | | Your Sonarr API key, from **Settings → General → Security** in Sonarr |
+
+## Requirements
+
+* Sonarr v3 or v4
+* Flow Launcher 1.17.0 or newer
+* Python 3.8 or newer, which Flow Launcher can install for you
+
+{% set recent_changes = changelog(3) %}
+{% if recent_changes | trim %}
+## Changelog
+
+{{ recent_changes }}
+
+See [CHANGELOG.md](CHANGELOG.md) for the full history.
+{% endif %}
+{% endblock %}
+
+{% block screenshots %}{% endblock %}
+{% block install %}{% endblock %}
+{% block contributing %}{% endblock %}
+{% block license %}{% endblock %}

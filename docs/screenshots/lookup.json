@@ -1,0 +1,26 @@
+{
+  "keyword": "sr",
+  "query": "severance",
+  "icon": "../../data/icon.png",
+  "max_results": 3,
+  "selection": 0,
+  "results": [
+    {
+      "title": "Severance",
+      "subtitle": "Office workers have their memories surgically divided between their work and personal lives.",
+      "icon": "../../data/icon.png"
+    },
+    {
+      "title": "Severance (2006)",
+      "subtitle": "A team-building weekend in the woods goes badly wrong for a group of sales staff.",
+      "icon": "../../data/icon.png"
+    },
+    {
+      "title": "The Severance",
+      "subtitle": "...",
+      "icon": "../../data/icon.png"
+    }
+  ],
+  "query_suggestion": "",
+  "show_caret": false
+}
