@@ -35,7 +35,8 @@ def format_subtitle(text: str) -> str:
 
 def sonarr() -> Sonarr:
     settings = plugin.settings
-    return Sonarr(settings.get("url") or DEFAULT_URL, settings.get("api_key") or "")
+    url = (settings.get("url") or DEFAULT_URL).strip().rstrip("/")
+    return Sonarr(url, (settings.get("api_key") or "").strip())
 
 
 def cached_series(client: Sonarr) -> List[dict]:

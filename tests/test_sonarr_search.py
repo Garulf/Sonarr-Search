@@ -120,6 +120,12 @@ def test_client_is_built_from_settings(settings):
     assert sonarr_search.sonarr().url == sonarr_search.DEFAULT_URL
 
 
+def test_trailing_slash_and_whitespace_are_trimmed_from_settings(settings):
+    settings.update(url=" http://localhost:8989/ ", api_key=f" {API_KEY}\n")
+    client = sonarr_search.sonarr()
+    assert (client.url, client.api_key) == ("http://localhost:8989", API_KEY)
+
+
 def test_query_method_returns_results_to_flow_launcher(client, monkeypatch):
     monkeypatch.setattr(sonarr_search, "sonarr", lambda: client)
     response = asyncio.run(sonarr_search.plugin._event_handler.trigger_event("query", "expanse"))
