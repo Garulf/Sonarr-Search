@@ -52,9 +52,11 @@ class FakeSession:
     def __init__(self, responses):
         self.responses = responses
         self.calls = []
+        self.timeouts = []
 
-    def get(self, url, headers=None, params=None):
+    def get(self, url, headers=None, params=None, timeout=None):
         self.calls.append((url, headers, params))
+        self.timeouts.append(timeout)
         path = url.split("8989", 1)[1]
         response = self.responses.get(path)
         if isinstance(response, Exception):

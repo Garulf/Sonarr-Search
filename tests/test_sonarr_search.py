@@ -68,6 +68,16 @@ def test_requests_send_the_api_key_header(client, session):
     assert session.calls[0][1] == {"X-Api-Key": API_KEY}
 
 
+def test_requests_time_out(client, session):
+    sonarr_search.search(client, "severance")
+    assert session.timeouts == [10, 10]
+
+
+def test_timeout_is_reported_as_a_connection_error(client, session):
+    session.responses["/api/v3/series"] = requests.exceptions.ReadTimeout()
+    assert titles(sonarr_search.search(client, "")) == ["Connection Error"]
+
+
 def test_missing_api_key_asks_for_settings(session):
     client = sonarr_search.Sonarr(URL, "", session=session)
     results = sonarr_search.search(client, "")

@@ -2,6 +2,8 @@ from typing import List, Optional
 
 import requests
 
+TIMEOUT = 10
+
 
 class Sonarr:
     def __init__(self, url: str, api_key: str, session: Optional[requests.Session] = None) -> None:
@@ -14,6 +16,7 @@ class Sonarr:
             f"{self.url}{path}",
             headers={"X-Api-Key": self.api_key},
             params=params,
+            timeout=TIMEOUT,
         )
         response.raise_for_status()
         return response.json()
