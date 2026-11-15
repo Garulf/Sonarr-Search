@@ -73,8 +73,8 @@ def settings():
 @pytest.fixture
 def session():
     return FakeSession({
-        "/api/series": FakeResponse(SERIES),
-        "/api/series/lookup": FakeResponse(LOOKUP),
+        "/api/v3/series": FakeResponse(SERIES),
+        "/api/v3/series/lookup": FakeResponse(LOOKUP),
     })
 
 

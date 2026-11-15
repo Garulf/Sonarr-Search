@@ -20,10 +20,10 @@ class Sonarr:
         return response.json()
 
     def series(self) -> List[dict]:
-        shows = self._get("/api/series")
+        shows = self._get("/api/v3/series")
         if shows == UNAUTHORIZED:
             return []
         return shows
 
     def lookup(self, term: str) -> List[dict]:
-        return self._get("/api/series/lookup", params={"term": term})
+        return self._get("/api/v3/series/lookup", params={"term": term})

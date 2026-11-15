@@ -68,14 +68,14 @@ def test_missing_api_key_asks_for_settings(session):
 
 
 def test_connection_error_asks_to_check_settings(client, session):
-    session.responses["/api/series"] = requests.exceptions.ConnectionError()
+    session.responses["/api/v3/series"] = requests.exceptions.ConnectionError()
     results = sonarr_search.search(client, "")
     assert titles(results) == ["Connection Error"]
     assert action(results[0])["Method"] == "Flow.Launcher.OpenSettingDialog"
 
 
 def test_unauthorized_reply_is_reported_and_not_cached(client, session):
-    session.responses["/api/series"] = FakeResponse({"error": "Unauthorized"})
+    session.responses["/api/v3/series"] = FakeResponse({"error": "Unauthorized"})
     assert titles(sonarr_search.search(client, "")) == ["Unauthorized or No shows found!"]
     assert sonarr_search.series_cache == {}
 
@@ -83,7 +83,7 @@ def test_unauthorized_reply_is_reported_and_not_cached(client, session):
 def test_library_is_cached_between_queries(client, session):
     sonarr_search.search(client, "expanse")
     sonarr_search.search(client, "breaking")
-    assert [call[0] for call in session.calls] == [f"{URL}/api/series"]
+    assert [call[0] for call in session.calls] == [f"{URL}/api/v3/series"]
 
 
 def test_client_is_built_from_settings(settings):
