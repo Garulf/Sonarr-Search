@@ -1,6 +1,7 @@
 import json
 
 import pytest
+import requests
 
 import sonarr_search
 from sonarr import Sonarr
@@ -37,7 +38,13 @@ class FakeResponse:
         self._payload = payload
         self.status_code = status_code
 
+    def raise_for_status(self):
+        if self.status_code >= 400:
+            raise requests.HTTPError(f"{self.status_code} Client Error", response=self)
+
     def json(self):
+        if isinstance(self._payload, str):
+            raise requests.exceptions.JSONDecodeError("Expecting value", self._payload, 0)
         return json.loads(json.dumps(self._payload))
 
 

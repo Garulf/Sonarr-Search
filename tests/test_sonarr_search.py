@@ -75,9 +75,36 @@ def test_connection_error_asks_to_check_settings(client, session):
 
 
 def test_unauthorized_reply_is_reported_and_not_cached(client, session):
-    session.responses["/api/v3/series"] = FakeResponse({"error": "Unauthorized"})
+    session.responses["/api/v3/series"] = FakeResponse({"message": "Unauthorized"}, status_code=401)
     assert titles(sonarr_search.search(client, "")) == ["Unauthorized or No shows found!"]
     assert sonarr_search.series_cache == {}
+
+
+def test_empty_library_is_reported(client, session):
+    session.responses["/api/v3/series"] = FakeResponse([])
+    assert titles(sonarr_search.search(client, "")) == ["Unauthorized or No shows found!"]
+
+
+def test_not_found_page_is_reported_instead_of_crashing(client, session):
+    session.responses["/api/v3/series"] = FakeResponse("<html>Not Found</html>", status_code=404)
+    results = sonarr_search.search(client, "")
+    assert titles(results) == ["Sonarr returned an error"]
+    assert action(results[0])["Method"] == "Flow.Launcher.OpenSettingDialog"
+
+
+def test_html_reply_is_reported_instead_of_crashing(client, session):
+    session.responses["/api/v3/series"] = FakeResponse("<html>Sign in</html>")
+    assert titles(sonarr_search.search(client, "")) == ["Sonarr returned an unexpected reply"]
+
+
+def test_url_without_scheme_is_reported_instead_of_crashing(client, session):
+    session.responses["/api/v3/series"] = requests.exceptions.MissingSchema("No scheme supplied")
+    assert titles(sonarr_search.search(client, "")) == ["Connection Error"]
+
+
+def test_lookup_error_is_reported_instead_of_crashing(client, session):
+    session.responses["/api/v3/series/lookup"] = FakeResponse({"message": "TVDB is down"}, status_code=503)
+    assert titles(sonarr_search.search(client, "severance")) == ["Sonarr returned an error"]
 
 
 def test_library_is_cached_between_queries(client, session):

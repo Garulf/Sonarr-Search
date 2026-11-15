@@ -2,8 +2,6 @@ from typing import List, Optional
 
 import requests
 
-UNAUTHORIZED = {"error": "Unauthorized"}
-
 
 class Sonarr:
     def __init__(self, url: str, api_key: str, session: Optional[requests.Session] = None) -> None:
@@ -17,13 +15,11 @@ class Sonarr:
             headers={"X-Api-Key": self.api_key},
             params=params,
         )
+        response.raise_for_status()
         return response.json()
 
     def series(self) -> List[dict]:
-        shows = self._get("/api/v3/series")
-        if shows == UNAUTHORIZED:
-            return []
-        return shows
+        return self._get("/api/v3/series")
 
     def lookup(self, term: str) -> List[dict]:
         return self._get("/api/v3/series/lookup", params={"term": term})

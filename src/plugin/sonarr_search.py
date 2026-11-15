@@ -6,7 +6,7 @@ from urllib.parse import quote
 
 from pyflowlauncher import FlowLauncherV2, Plugin, Result, api, icons
 from pyflowlauncher.models.result import PreviewInfo
-from requests.exceptions import ConnectionError
+from requests.exceptions import HTTPError, JSONDecodeError, RequestException
 
 from sonarr import Sonarr
 
@@ -73,11 +73,21 @@ def search(client: Sonarr, query: str) -> List[Result]:
         return [settings_result("Please set your API key", f"Plugins > {PLUGIN_NAME} > API Key")]
     try:
         shows = cached_series(client)
-    except ConnectionError:
+        if not shows:
+            return [unauthorized_result()]
+        return library_results(client, query, shows) or new_series_results(client, query)
+    except HTTPError as error:
+        if error.response is not None and error.response.status_code == 401:
+            return [unauthorized_result()]
+        return [settings_result("Sonarr returned an error", f"{error}. Please check your Sonarr URL")]
+    except JSONDecodeError:
+        return [settings_result("Sonarr returned an unexpected reply", "Please check your Sonarr URL")]
+    except RequestException:
         return [settings_result("Connection Error", "Please check your settings")]
-    if not shows:
-        return [settings_result("Unauthorized or No shows found!", "Please check your API key.")]
-    return library_results(client, query, shows) or new_series_results(client, query)
+
+
+def unauthorized_result() -> Result:
+    return settings_result("Unauthorized or No shows found!", "Please check your API key.")
 
 
 @plugin.on_method
